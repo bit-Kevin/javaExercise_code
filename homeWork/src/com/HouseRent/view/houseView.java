@@ -50,7 +50,7 @@ public class houseView {
     }
 
     //查找房源
-    public  void  findView(){
+    public void findView() {
         //输出提示信息
         System.out.println("请输入你要查找的房源ID：");
         int findID = utility.readInt();
@@ -60,8 +60,8 @@ public class houseView {
             return;
         }
         //开始查找匹配的ID
-        int temp=service.find(findID);
-        if (temp==-1){
+        int temp = service.find(findID);
+        if (temp == -1) {
             System.out.println("查找结束");
             //结束程序
             return;
@@ -89,7 +89,7 @@ public class houseView {
     }
 
     //更新房源信息
-    public void upDate(){
+    public void upDate() {
         //输出提示信息
         System.out.println("请输入你修改要的房源ID：");
         int upDateID = utility.readInt();
@@ -99,8 +99,8 @@ public class houseView {
             return;
         }
         //开始查找匹配的ID
-        int temp=service.find(upDateID);
-        if (temp==-1){
+        int temp = service.find(upDateID);
+        if (temp == -1) {
             System.out.println("修改结束");
             //结束程序
             return;
@@ -110,6 +110,7 @@ public class houseView {
         //打印确认一遍
         System.out.println(houseArr[temp].toString());
     }
+
     //打印菜单
     public void menu() {
         do {

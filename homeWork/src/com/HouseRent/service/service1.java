@@ -97,28 +97,29 @@ public class service1 {
 
         return true;
     }
+
     //修改房源信息
-    public void upDate(int upDateNum){
+    public void upDate(int upDateNum) {
         System.out.println(houseArr[upDateNum].getId());
         //修改房主
-        System.out.print("房主 "+houseArr[upDateNum].getName()+":");
-        String name = utility.readString(5,houseArr[upDateNum].getName());
+        System.out.print("房主 " + houseArr[upDateNum].getName() + ":");
+        String name = utility.readString(5, houseArr[upDateNum].getName());
         houseArr[upDateNum].setName(name);
         //修改联系方式
-        System.out.print("电话 "+houseArr[upDateNum].getPhone()+":");
-        String phone = utility.readString(11,houseArr[upDateNum].getPhone());
+        System.out.print("电话 " + houseArr[upDateNum].getPhone() + ":");
+        String phone = utility.readString(11, houseArr[upDateNum].getPhone());
         houseArr[upDateNum].setPhone(phone);
         //修改地址
-        System.out.print("地址 "+houseArr[upDateNum].getAddress()+":");
-        String address = utility.readString(10,houseArr[upDateNum].getAddress());
+        System.out.print("地址 " + houseArr[upDateNum].getAddress() + ":");
+        String address = utility.readString(10, houseArr[upDateNum].getAddress());
         houseArr[upDateNum].setAddress(address);
         //修改租金
-        System.out.print("月租 "+houseArr[upDateNum].getMonthlyRent()+":");
+        System.out.print("月租 " + houseArr[upDateNum].getMonthlyRent() + ":");
         int monthlyRent = utility.readInt(houseArr[upDateNum].getMonthlyRent());
         houseArr[upDateNum].setMonthlyRent(monthlyRent);
         //修改状态
-        System.out.print("状态 "+houseArr[upDateNum].getState()+":");
-        String state = utility.readString(5,houseArr[upDateNum].getState());
+        System.out.print("状态 " + houseArr[upDateNum].getState() + ":");
+        String state = utility.readString(5, houseArr[upDateNum].getState());
         houseArr[upDateNum].setState(state);
         System.out.println("修改成功");
     }

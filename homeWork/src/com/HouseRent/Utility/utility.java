@@ -1,13 +1,13 @@
 package com.HouseRent.Utility;
 
 
-
 /**
- 工具类的作用:
- 处理各种情况的用户输入，并且能够按照程序员的需求，得到用户的控制台输入。
+ * 工具类的作用:
+ * 处理各种情况的用户输入，并且能够按照程序员的需求，得到用户的控制台输入。
  */
 
 import java.util.*;
+
 /**
 
 
@@ -42,6 +42,7 @@ public class utility {
         String str = readKeyBoard(1, false);//就是一个字符
         return str.charAt(0);
     }
+
     /**
      * 功能：读取键盘输入的一个字符，如果直接按回车，则返回指定的默认值；否则返回输入的那个字符
      * @param defaultValue 指定的默认值
@@ -70,6 +71,7 @@ public class utility {
         }
         return n;
     }
+
     /**
      * 功能：读取键盘输入的 整数或默认值，如果直接回车，则返回默认值，否则返回输入的整数
      * @param defaultValue 指定的默认值
@@ -113,7 +115,7 @@ public class utility {
 
     public static String readString(int limit, String defaultValue) {
         String str = readKeyBoard(limit, true);
-        return str.equals("")? defaultValue : str;
+        return str.equals("") ? defaultValue : str;
     }
 
 
