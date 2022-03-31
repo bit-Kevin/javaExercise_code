@@ -5,18 +5,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Vector;
 
 public class MyPanel extends JPanel implements KeyListener {//画板
     Hero hero = null;
-    ArrayList<Enemy>  enemies= new ArrayList<>();
+    Vector<Enemy> enemies = new Vector<>();
     //初始化自己坦克
     public MyPanel() {
         hero = new Hero(100, 100,0);
-        enemies.add(new Enemy(200,100,0));
-        enemies.add(new Enemy(400,100,0));
-        enemies.add(new Enemy(600,100,0));
+        enemies.add(new Enemy(200,100,2));
+        enemies.add(new Enemy(400,100,2));
+        enemies.add(new Enemy(600,100,2));
 
     }
 
