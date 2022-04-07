@@ -23,8 +23,10 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {//画板
     //初始化自己及敌人坦克坦克
     public MyPanel() {
         hero = new Hero(100, 100, 0);
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 10; i++) {
             Enemy enemy = new Enemy(200 * (i + 1), 100, 2);
+            //初始化时把enemies传给enemy对象，方便enemy调用
+            enemy.setEnemies(enemies);
             //给敌人添加一发炮弹
             Shot shot = (new Shot(enemy.getX(), enemy.getY() + 30, enemy.getDirection()));
             //启动第一发炮弹线程
@@ -46,9 +48,28 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {//画板
         image3 = Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/bomb_3.gif"));
     }
 
+    //打印游戏击毁敌方坦克信息
+    public void ShowInfo(Graphics g){
+        //给笔设置颜色
+        g.setColor(Color.black);
+        //定义一个字体
+        Font font = new Font("楷体",Font.BOLD,25);
+        //给笔设置字体
+        g.setFont(font);
+        //输出信息
+        g.drawString("击毁的玩家数",1040,40);
+        //画出一个模板坦克
+        DrawTank(1060,100,0,1,g);
+        //再把笔设回黑色
+        g.setColor(Color.black);
+
+    }
+
     @Override
     public void paint(Graphics g) {//定义一支笔(符号）
         super.paint(g);
+        //打印击毁信息
+        ShowInfo(g);
         //调用笔所提供的的方法
         g.fillRect(0, 0, 1000, 750);
 
@@ -173,7 +194,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {//画板
                     //玩家死亡 通过不打印来移除hero
                     shot.IsLive = false;
                     tank.IsLive = false;
-                    bombs.add(new Bomb(tank.getX() - 25, tank.getY() - 25));
+                    bombs.add(new Bomb(tank.getX() , tank.getY() ));
                 }
                 break;
             case 1:
@@ -186,7 +207,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {//画板
                     }
                     shot.IsLive = false;
                     tank.IsLive = false;
-                    bombs.add(new Bomb(tank.getX() - 25, tank.getY() - 25));
+                    bombs.add(new Bomb(tank.getX() , tank.getY() ));
                 }
                 break;
         }
@@ -255,6 +276,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {//画板
             }
         }
     }
+
 
     @Override
     public void run() {//把画板线程化，无时无刻都在刷新

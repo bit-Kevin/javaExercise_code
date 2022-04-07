@@ -19,7 +19,7 @@ public class TankGame extends JFrame {//继承窗口
         //把画板添加到窗口
         this.add(mp);
         //设置窗口大小
-        this.setSize(1000, 750);
+        this.setSize(1300, 750);
         //叉掉窗口，结束程序
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //窗口可见

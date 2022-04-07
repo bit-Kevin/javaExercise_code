@@ -7,8 +7,8 @@ public class Bomb {
     boolean IsLive=true;
 
     public Bomb(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.x = x-25;
+        this.y = y-25;
     }
     //制作动画过度方法,每次减少动画周期
     public void LiveDown(){
