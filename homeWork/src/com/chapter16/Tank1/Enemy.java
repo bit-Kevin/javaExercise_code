@@ -289,7 +289,6 @@ public class Enemy extends Tank implements Runnable {
                     distance = (int) (Math.random() * 100 +10);
                     for (int i = 0; i < distance; i++) {
                         if (getX()>30&&!IsCrash()){
-                            System.out.println("进入到了移动代码");
                             MoveLeft();
                         }
 

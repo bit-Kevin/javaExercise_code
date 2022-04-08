@@ -18,7 +18,7 @@ public class Tank {
     }
 
     public void MoveRight() {
-        if (x < 1000-50) x += speed;//窗口遮挡了一些，所以设置为50。不考虑遮挡问题是30
+        if (x < 1000-30) x += speed;//窗口遮挡了一些，所以设置为50。不考虑遮挡问题是30
     }
 
     public void MoveDown() {if (y < 750 -70) y += speed;}

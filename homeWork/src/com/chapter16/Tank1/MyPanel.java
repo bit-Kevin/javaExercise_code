@@ -1,14 +1,19 @@
 package com.chapter16.Tank1;
 
 
+import org.junit.jupiter.api.Test;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.util.Vector;
 
 public class MyPanel extends JPanel implements KeyListener, Runnable {//画板
     Hero hero = null;
+    //定义恢复的坦克集合
+    Vector<Node> nodes = null;
 
     //定义敌人坦克集合
     Vector<Enemy> enemies = new Vector<>();
@@ -21,31 +26,83 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {//画板
     Image image3 = null;
 
     //初始化自己及敌人坦克坦克
-    public MyPanel() {
-        hero = new Hero(100, 100, 0);
-        for (int i = 0; i < 10; i++) {
-            Enemy enemy = new Enemy(200 * (i + 1), 100, 2);
-            //初始化时把enemies传给enemy对象，方便enemy调用
-            enemy.setEnemies(enemies);
-            //给敌人添加一发炮弹
-            Shot shot = (new Shot(enemy.getX(), enemy.getY() + 30, enemy.getDirection()));
-            //启动第一发炮弹线程
-            new Thread(shot).start();
-            //启动敌人线程
-            new Thread(enemy).start();
-            //添加炮弹
-            enemy.shots.add(shot);
-            //添加敌人对象
-            enemies.add(enemy);
+    public MyPanel(int key) {
+        // 把敌方坦克传给Recorder
+        Recorder.setEnemies(enemies);
+        //判断是否存在上局文件
+        File file =new File(Recorder.FIlePath);
+        if (file.exists()){
+            nodes= Recorder.Recover();
+        }else {
+            System.out.println("数据文件不存在");
+            key = 2;
+        }
+
+        Node node =null;
+        switch (key){
+            case 1://继续游戏
+
+                //导出hero
+                node= nodes.get(0);
+                hero = new Hero(node.getX(), node.getY(), node.getDirection());
+                //把hero传入Recorder
+                Recorder.setHero(hero);
+                //导出余下的敌人
+                for (int i = 1; i < nodes.size(); i++) {
+                     node =nodes.get(i);
+                    Enemy enemy = new Enemy(node.getX(), node.getY(), node.getDirection());
+                    //初始化时把enemies传给enemy对象，方便enemy调用
+                    enemy.setEnemies(enemies);
+                    //给敌人添加一发炮弹
+                    Shot shot = (new Shot(enemy.getX(), enemy.getY() + 30, enemy.getDirection()));
+                    //启动第一发炮弹线程
+                    new Thread(shot).start();
+                    //启动敌人线程
+                    new Thread(enemy).start();
+                    //添加炮弹
+                    enemy.shots.add(shot);
+                    //添加敌人对象
+                    enemies.add(enemy);
 
 
-            //让敌人跑起来
-            //new Thread(enemy).start();  重复启动同一敌人线程导致两个线程同时操控一个敌人 ，从而导致鬼畜和漂移（不是switch传透导致的）
+                    //让敌人跑起来
+                    //new Thread(enemy).start();  重复启动同一敌人线程导致两个线程同时操控一个敌人 ，从而导致鬼畜和漂移（不是switch传透导致的）
+                }
+                break;
+            case 2://新游戏
+                hero = new Hero(100, 100, 0);
+                //把hero传入Recorder
+                Recorder.setHero(hero);
+                for (int i = 0; i < 4; i++) {
+                    Enemy enemy = new Enemy(200 * (i + 1), 100, 2);
+                    //初始化时把enemies传给enemy对象，方便enemy调用
+                    enemy.setEnemies(enemies);
+                    //给敌人添加一发炮弹
+                    Shot shot = (new Shot(enemy.getX(), enemy.getY() + 30, enemy.getDirection()));
+                    //启动第一发炮弹线程
+                    new Thread(shot).start();
+                    //启动敌人线程
+                    new Thread(enemy).start();
+                    //添加炮弹
+                    enemy.shots.add(shot);
+                    //添加敌人对象
+                    enemies.add(enemy);
+                    //让敌人跑起来
+                    //new Thread(enemy).start();  重复启动同一敌人线程导致两个线程同时操控一个敌人 ，从而导致鬼畜和漂移（不是switch传透导致的）
+                }
+                break;
+            default:
+                System.out.println("输入有误");
+                break;
         }
         //初始化时定义图片
         image1 = Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/bomb_1.gif"));
         image2 = Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/bomb_2.gif"));
         image3 = Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/bomb_3.gif"));
+        //结束以后调用音乐
+
+        new AePlayWave("G:\\IDEAcode\\javaExercise_code\\homeWork\\src\\111.wav").start();
+
     }
 
     //打印游戏击毁敌方坦克信息
@@ -57,11 +114,12 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {//画板
         //给笔设置字体
         g.setFont(font);
         //输出信息
-        g.drawString("击毁的玩家数",1040,40);
+        g.drawString("击毁的坦克数",1040,40);
         //画出一个模板坦克
         DrawTank(1060,100,0,1,g);
         //再把笔设回黑色
         g.setColor(Color.black);
+        g.drawString("X "+Recorder.count+"",1100,110);
 
     }
 
@@ -187,9 +245,10 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {//画板
             case 2:
                 if (shot.x < tank.getX() + 20 && shot.x > tank.getX() - 20
                         && shot.y < tank.getY() + 30 && shot.y > tank.getY() - 30) {
-                    //坦克是死的就移除，避免尸体吃子弹
+                    //坦克是死的就移除，避免尸体吃子弹,在面板分数加一
                     if (tank instanceof Enemy) {
                         enemies.remove(tank);
+                        Recorder.count++;
                     }
                     //玩家死亡 通过不打印来移除hero
                     shot.IsLive = false;
@@ -204,6 +263,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {//画板
                     //坦克是死的就移除，避免尸体吃子弹
                     if (tank instanceof Enemy) {
                         enemies.remove(tank);
+                        Recorder.count++;
                     }
                     shot.IsLive = false;
                     tank.IsLive = false;
